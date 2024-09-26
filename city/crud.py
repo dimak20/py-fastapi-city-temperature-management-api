@@ -73,9 +73,7 @@ async def create_temperature_by_city_id(
         date_time=temperature.date_time
     )
     result = await db.execute(query)
-    city_query = select(models.DBCity).where(models.DBCity.id == temperature.city_id)
-    city_result = await db.execute(city_query)
-    city = city_result.scalar_one_or_none()
+    city = await get_city_by_id(db=db, city_id=temperature.city_id)
 
     resp = {
         "id": result.lastrowid,
